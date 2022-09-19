@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org// DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.anhun.mapper.EventMapper">
+
+    <insert id="addEvent" useGeneratedKeys="true" keyProperty="eventId">
+        insert into events (from_id,
+        <if test="fromName != null and fromName !=''">from_name,</if>
+        to_id,
+        <if test="toName != null and toName != ''">to_name,</if>
+        state, message,
+        send_time)
+        values (#{fromId},
+        <if test="fromName != null and fromName !=''">#{fromName},</if>
+        #{toId},
+        <if
+                test="toName != null and toName != ''">#{toName},
+        </if>
+        #{state}, #{message},#{sendTime})
+    </insert>
+
+    <resultMap id="eventMap" type="Event">
+        <id property="eventId" column="event_id"/>
+        <result property="fromId" column="from_id"/>
+        <result property="fromName" column="from_name"/>
+        <result property="toId" column="to_id"/>
+        <result property="toName" column="to_name"/>
+        <result property="state" column="state"/>
+        <result property="message" column="message" javaType="java.lang.String"/>
+        <result property="sendTime" column="send_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <select id="findApplyEvent" resultMap="eventMap">
+        select *
+        from events
+        where from_id = #{from}
+          and to_id = #{to}
+          and state = 1
+    </select>
+
+    <select id="findApplyGroupEvent" resultMap="eventMap">
+        select *
+        from events
+        where from_id = #{from}
+          and to_id = #{to}
+          and to_name = #{name}
+          and state = 6
+    </select>
+
+    <select id="findPendingEvent" parameterType="User" resultType="Event">
+        select event_id,
+               from_id,
+               from_name,
+               to_id,
+               to_name,
+               state,
+               message,
+               send_time
+        from events
+        where to_id = #{id}
+          and (state = 1 or state = 6)
+    </select>
+
+    <select id="findEvent" resultMap="eventMap">
+        select *
+        from events
+        where from_id = #{from}
+          and to_id = #{to}
+          and state = #{state}
+    </select>
+
+    <update id="alterEventSendTime">
+        update events
+        set send_time = #{time}
+        where from_id = #{from}
+          and to_id = #{to}
+    </update>
+
+    <insert id="insertFriendship" parameterType="Event">
+        insert into friendship (idv, idw)
+        values (#{fromId}, #{toId}),
+               (#{toId}, #{fromId})
+    </insert>
+
+    <insert id="insertUserGroup" parameterType="Event">
+        insert into `usergroup` (user_id, group_id)
+        values (#{fromId}, #{toId})
+    </insert>
+
+    <select id="findEventById" resultType="Event">
+        select *
+        from events
+        where event_id = #{id}
+    </select>
+
+    <delete id="deleteEventById">
+        delete
+        from events
+        where event_id = #{id}
+    </delete>
+
+    <select id="findHistoryMessage" resultType="Event">
+        select *
+        from events
+        where (from_id = #{fromId}
+            and to_id = #{toId})
+           or (from_id = #{toId} and to_id = #{fromId})
+            and state = 2
+
+        order by send_time desc limit 20
+    </select>
+
+    <select id="findGroundHistoryMessage" resultType="Event">
+        select *
+        from events
+        where state = 4
+        order by send_time desc limit 15
+    </select>
+
+    <select id="findGroupHistroyMessage" resultType="Event">
+        select *
+        from events
+        where state = 5
+          and to_id = #{groupId}
+        order by send_time desc limit 20
+    </select>
+</mapper>

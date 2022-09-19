@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录页面</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+
+    </style>
+</head>
+<body >
+<div class="d-flex  vh-100 main  p-3 justify-content-center">
+    <form class="mb-3  w-50  align-self-center" th:action="@{/trylogin}" th:object="${user}">
+        <figure>用户登录</figure>
+        <div class="form-floating mb-3">
+            <input class="form-control" th:field="*{account}" type="text" placeholder="user-account"/>
+            <label for="account">account</label>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input class="form-control" th:field="*{password}" type="password" placeholder="user-password"/>
+            <label for="password">password</label>
+        </div>
+        <div class="d-grid mb-3">
+            <button class="btn btn-outline-success" type="submit">登录</button>
+        </div>
+
+        <span>
+			<a class="btn btn-outline-secondary" th:href="@{/register}">注册账号</a>
+		    </span>
+        <div class="alert-danger" th:text="${msg}"/>
+    </form>
+
+
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</div>
+</body>
+</html>

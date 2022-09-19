@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>好友列表页面</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+
+<body class="vh-100 align-items-stretch">
+<div class=" main p-3 border-bottom">
+    <form id="form">
+        <div class="row g-2">
+            <div class="col ">
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="groupName" placeholder="groupName"/>
+                    <label for="groupName">群组名称</label>
+                </div>
+            </div>
+            <div class="col">
+                <button type="button" onclick="searchGroup()" class="btn btn-outline-primary">查询群组</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="w-100 m-0 " style="height: 90%;">
+    <iframe id="myiframe" name="myiframe" th:src="@{/initGroupList}" scrolling="no" width="100%" height="100%"></iframe>
+</div>
+<script th:src="@{/js/jquery-3.6.0.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script type="text/javascript">
+    function searchGroup() {
+        var groupName = document.getElementById('groupName').value;
+        var frame = document.getElementById("myiframe");
+        frame.src = "/searchgroup/" + groupName;
+        alert(frame.src);
+        $('#myiframe').attr('src', $('#myiframe').attr('src'));
+    }
+</script>
+</body>
+
+</html>

@@ -1,0 +1,18 @@
+spring:
+  thymeleaf:
+    cache: false
+  datasource:
+    url: jdbc:mysql://localhost:3306/chattingroom?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: root
+    password: Aa725386@
+    driver-class-name: com.mysql.jdbc.Driver
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 20MB
+      max-request-size: 130MB
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.anhun.entity
+  config-location: classpath:mybatis-config.xml
+

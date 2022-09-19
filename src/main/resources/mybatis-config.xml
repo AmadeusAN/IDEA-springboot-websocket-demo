@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+    <!--    <properties resource="db.properties"/>-->
+
+    <!-- 开启延迟加载，使用嵌套查询进行关联映射时，可以降低运行消耗并提高查找效率 -->
+    <settings>
+        <!-- 打开延迟加载开关 -->
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <!-- 将积极加载改为消极加载，即按需加载 -->
+        <setting name="aggressiveLazyLoading" value="false"/>
+
+        <!--        二级缓存开关，默认开启-->
+        <setting name="cacheEnabled" value="true"/>
+
+
+        <!--        使用 Log4j 输出日志-->
+        <setting name="logImpl" value="LOG4J"/>
+        <!--        开启下划线转驼峰自动映射-->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+
+
+    </settings>
+
+    <!-- 配置类型别名，减少全限定名的冗余 -->
+    <typeAliases>
+        <!-- 可以自动扫描包来配置别名，默认包内类名小写 -->
+
+    </typeAliases>
+
+    <!--    类型处理器，用于Java类与数据库类型的转换，MyBatis默认会加载所有JDBCType类型
+    的转换器，但对于枚举类型，需要注册下面这个转换器才能将Java枚举类与数据库INT类型对应-->
+    <typeHandlers>
+
+    </typeHandlers>
+
+
+    <!--    &lt;!&ndash; 配置环境 ，默认环境ID为mysql&ndash;&gt;-->
+    <!--    <environments default="mysql">-->
+    <!--        &lt;!&ndash; 配置id 为mysql的数据库环境 &ndash;&gt;-->
+    <!--        <environment id="mysql">-->
+    <!--            &lt;!&ndash; 使用JDBC的事务管理 &ndash;&gt;-->
+    <!--            <transactionManager type="JDBC"/>-->
+    <!--            &lt;!&ndash; 数据库连接池 &ndash;&gt;-->
+    <!--            <dataSource type="POOLED">-->
+    <!--                <property name="driver" value="${jdbc.driver}"/>-->
+    <!--                <property name="url" value="${jdbc.url}"/>-->
+    <!--                <property name="username" value="${jdbc.username}"/>-->
+    <!--                <property name="password" value="${jdbc.password}"/>-->
+
+    <!--            </dataSource>-->
+
+    <!--        </environment>-->
+
+    <!--    </environments>-->
+
+    <!--    &lt;!&ndash; 配置Mapper的位置 &ndash;&gt;-->
+    <mappers>
+        <package name="com.anhun.mapper"/>
+    </mappers>
+
+</configuration>

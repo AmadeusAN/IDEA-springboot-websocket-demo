@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>群组用户页面</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+
+<body>
+
+<div class="friendlist container py-3">
+    <h4 class="mb-3 border-bottom pb-2">群组成员列表</h4>
+    <div class="row row-cols-3 g-4 justify-content-center">
+        <div class="col" th:each="user:${userlist}">
+            <div class="btn-outline-primary shadow p-2 mx-2 position-relative">
+                <div class="row align-items-center">
+                    <div class="col-4">
+                        <h4 class="visually-hidden" th:text="${user.id}"></h4>
+                        <img th:src="@{/img/__${user.id}___profile_picture.jpg}" class="shadow rounded-circle me-2 "
+                             width="60px"
+                             height="60px"/>
+                    </div>
+                    <div class="col-8 ">
+                        <strong th:text="${user.name}"></strong>
+                        <h6 th:text="${user.account}"></h6>
+                        <a href="#" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="fixed-bottom">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+                <a class="page-link">Previous</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<script th:src="@{/js/jquery-3.6.0.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+</body>
+</html>

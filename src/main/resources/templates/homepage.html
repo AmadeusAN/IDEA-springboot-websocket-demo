@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/cropper.min.css}">
+    <style>
+        img {
+            display: block;
+            max-width: 100%;
+        }
+
+        .previewBox,
+        .previewBoxRound {
+            box-shadow: 0 0 5px #adadad;
+            width: 100px;
+            height: 100px;
+            margin-top: 30px;
+            overflow: hidden;
+            /*这个超出设置为隐藏很重要，否则就会整个显示出来了*/
+        }
+
+        .previewBoxRound {
+            border-radius: 50%;
+            /*设置为圆形*/
+        }
+    </style>
+</head>
+
+<body class="vh-100">
+<div class="container p-3 main d-flex ">
+
+    <div id="headimg" class="me-3">
+        <img class="shadow" id="profilepicture" alt="暂无头像" width="200" style="border-radius: 50%;"
+             th:src="@{/img/__${user.id}___profile_picture.jpg?t=__${#dates.createNow()}__}"/>
+    </div>
+    <div class="descripte align-self-center" th:object="${user}">
+        <dl class="row">
+            <dt class="col-sm-3">个人ID</dt>
+            <dd class="col-sm-9" th:text="*{id}"></dd>
+            <dt class="col-sm-3">姓名</dt>
+            <dd class="col-sm-9" th:text="*{name}">
+            </dd>
+            <dt class="col-sm-3">账号</dt>
+            <dd class="col-sm-9" th:text="*{account}"></dd>
+            <dt class="col-sm-3 text-truncate">个人描述</dt>
+            <dd class="col-sm-9">暂无</dd>
+            <dt class="col-sm-3">上次在线</dt>
+            <dd class="col-sm-9" th:text="${#dates.format(user.getLastLogin(),'yyyy-MM-dd')}"></dd>
+        </dl>
+        <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">更换头像</button>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="d-block cavans mb-3" action="/homepage/submithheadimg" method="POST"
+                      enctype="multipart/form-data">
+                    <input type="file" id="inputfile" accept="image/*" class="form-control"/>
+                    <!-- <button type="button" onclick="loadimg()" class="visually-hidden" id="submit"></button> -->
+                    <div class="previewBoxRound"></div>
+                </form>
+                <div>
+                    <img id="cropImg"/>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" id="getCroppedCanvas" onclick="GetData()" class="btn btn-primary">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script th:src="@{/js/jquery-3.6.0.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/cropper.min.js}"></script>
+<script type="text/javascript">
+    var cropper = null;
+
+    $('#inputfile').on('change', function (eve) {
+        loadingImg(eve);
+    })
+
+    function loadingImg(eve) {
+
+        //读取上传文件
+        let reader = new FileReader();
+        if (event.target.files[0]) {
+
+            //readAsDataURL方法可以将File对象转化为data:URL格式的字符串（base64编码）
+            reader.readAsDataURL(eve.target.files[0]);
+            reader.onload = (e) => {
+                let dataURL = reader.result;
+
+                //将img的src改为刚上传的文件的转换格式
+                document.querySelector('#cropImg').src = dataURL;
+
+                const image = document.getElementById('cropImg');
+
+                //创建cropper实例-----------------------------------------
+                cropper = new Cropper(image, {
+                    aspectRatio: 16 / 16,
+                    // viewMode:1,
+                    // minContainerWidth:500,
+                    // minContainerHeight:500,
+                    // dragMode:'move',
+                    preview: [
+                        document.querySelector('.previewBoxRound')]
+                })
+
+                if (cropper == null) {
+                    alert('创建实例失败');
+                }
+            }
+        }
+    }
+
+    function GetData() {
+        //getCroppedCanvas方法可以将裁剪区域的数据转换成canvas数据
+        cropper.getCroppedCanvas({
+            maxWidth: 4096,
+            maxHeight: 4096,
+            fillColor: '#fff',
+            imageSmoothingEnabled: true,
+            imageSmoothingQuality: 'high',
+        }).toBlob((blob) => {
+            //然后调用浏览器原生的toBlob方法将canvas数据转换成blob数据
+
+            //之后就可以愉快的将blob数据发送至后端啦，可根据自己情况进行发送，我这里用的是axios
+            const formData = new FormData();
+            // 第三个参数为文件名，可选填.
+            formData.append('file', blob/*, 'example.png' */);
+            let config = {
+                headers: {'Content-Type': 'multipart/form-data'}
+            }
+
+            $.ajax({
+                url: '/homepage/submithheadimg',
+                dataType: 'json',
+                traditional: true,
+                contentType: false,//为了避免 JQuery 对其操作，从而失去分界符
+                //用于对data参数进行序列化处理 这里必须false
+                processData: false,
+                type: 'POST',
+                cache: false, //上传文件无需缓存
+                data: formData,
+                // traditional:true,
+                // contentType: 'application/json',
+                // contentType:"Cache-Control: no-cache, must-revalidate",
+                // contentType:"application/x-www-form-urlencoded:charset=UTF-8",
+                success: function (data) {
+                    alert(data.msg + ' 文件临时目录为 ' + data.imgpath);
+
+                    $('#profilepicture').attr('src', data.imgpath);     // 'img/picturename.jpg'
+                    // window.
+                },
+                error: function (data) {
+                    alert(data.msg);
+                },
+            })
+        })
+    }
+</script>
+</body>
+
+</html>

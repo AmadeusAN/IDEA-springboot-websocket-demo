@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>好友列表页面</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+
+<body>
+<div class="container">
+    <div class="container main p-3 border-bottom">
+        <form class="mb-3 p-3" th:action="@{/checkUserById}">
+            <div class="row g-2">
+                <div class="col ">
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="id" name="id" placeholder="friendid"/>
+                        <label for="id">好友id</label>
+                    </div>
+                </div>
+                <div class="col">
+                    <button type="submit" class="btn btn-success">查询好友</button>
+                </div>
+            </div>
+        </form>
+        <span class="p-3" th:text="${msg}"></span>
+    </div>
+    <div class="friendlist container m-3 py-3">
+        <h3 class="mb-3">我的好友列表</h3>
+        <div class="row row-cols-lg-6 row-cols-sm-3 g-4">
+            <div class="col" th:each="user:${friendlist}">
+                <div class="btn-outline-success shadow p-2 mx-2 position-relative">
+                    <div class="row">
+                        <div class="col-4">
+                            <h4 th:text="${user.id}"></h4>
+                        </div>
+                        <div class="col-8">
+                            <strong th:text="${user.name}"></strong>
+                            <p th:text="${user.account}"></p>
+                        </div>
+                        <a th:href="@{/checkUser/__${user.id}__}" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+</div>
+<script th:src="@{/js/jquery-3.6.0.min.js}"></script>
+<script th:src="@{js/bootstrap.min.js}"></script>
+</body>
+
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+
+<body>
+<div class="container main p-3">
+    <form id="form" th:object="${group}">
+        <fieldset>
+            <legend class="text-primary">新建群组信息</legend>
+            <div class="mb-3 row">
+                <label for="groupName" class="col-sm-2 col-form-label">群聊名称</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" th:field="*{groupName}">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="groupDescript" class="col-sm-2 col-form-label">群组描述</label>
+                <div class="col-sm-10">
+                    <textarea class="form-control"
+                              th:field="*{groupDescript}"></textarea>
+                </div>
+            </div>
+
+            <div class="row">
+                <button type="button" onclick="getformdata()" class="btn col-2 btn-primary">Submit</button>
+                <span class="form-text col-6 align-self-center">注意：新建的群聊会将你当做管理员</span>
+            </div>
+        </fieldset>
+    </form>
+</div>
+<script th:src="@{/js/jquery-3.6.0.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script type="text/javascript">
+    function getformdata() {
+        // var formdata = $('#form').serialize();
+        // alert(formdata);
+        $.ajax({
+            type: 'post',
+            url: "/tryinsertgroup",
+            data: $('#form').serialize(),
+            success: function (data) {
+                alert(data);
+                var parent = window.parent;
+                parent.location.reload();
+            },
+            error: function () {
+                alert('上传数据失败');
+            }
+        })
+    }
+</script>
+</body>
+
+</html>
