@@ -63,6 +63,7 @@ public class IndexController {
     @RequestMapping("/finduserProfilepicture")
     @ResponseBody
     public void findAndSaveUserProfilePicture(HttpSession session) {
+        log.info("初次加载项目时该处可能会报错");
         BufferedOutputStream bos = null;
         FileOutputStream fos = null;
         try {
