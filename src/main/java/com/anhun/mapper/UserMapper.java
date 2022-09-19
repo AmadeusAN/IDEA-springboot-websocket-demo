@@ -15,7 +15,21 @@ public interface UserMapper {
 
     int insertUser(User user);
 
+    /**
+     * <p>寻找特定id 用户的所有好友</p>
+     *
+     * @param id
+     * @return
+     */
     List<User> findFirendListById(int id);
+
+    /**
+     * 根据包含在 <code>user</code> 中的 id 值或者 name 值进行搜寻
+     *
+     * @param user
+     * @return
+     */
+    List<User> findFriendsByIdOrName(User user);
 
     ProfilePicture findUserProfilePictureById(int id);
 

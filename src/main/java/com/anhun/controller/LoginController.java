@@ -1,6 +1,5 @@
 package com.anhun.controller;
 
-import com.anhun.entity.Event;
 import com.anhun.entity.User;
 import com.anhun.mapper.EventMapper;
 import com.anhun.mapper.UserMapper;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
-import java.util.List;
 
 @Controller
 public class LoginController {
@@ -24,13 +22,13 @@ public class LoginController {
     private EventMapper eventMapper;
 
     @RequestMapping("/register")
-    public String res(Model model) {
+    public String register(Model model) {
         model.addAttribute("user", new User());
         return "register";
     }
 
     @RequestMapping("/registeruser")
-    public String register(@ModelAttribute("user") User user, HttpServletRequest request, Model model) {
+    public String registeruser(@ModelAttribute("user") User user, HttpServletRequest request, Model model) {
         User exist = userMapper.findUserByAccount(user.getAccount());
         if (exist != null) {
             model.addAttribute("msg", "该用户已存在");

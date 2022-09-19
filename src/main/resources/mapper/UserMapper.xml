@@ -41,6 +41,18 @@
           and f.idw = user.id
     </select>
 
+    <select id="findFriendsByIdOrName" resultMap="usermapwithnoimg">
+        select id,name,account from user
+        <where>
+            <if test="name != null and name != ''">
+                and name like concat("%",#{name},"%")
+            </if>
+            <if test="id != null and id != 0">
+                and id = #{id}
+            </if>
+        </where>
+    </select>
+
     <select id="findUserById" resultType="User">
         select *
         from user
@@ -73,6 +85,12 @@
         <result column="name" property="name"/>
         <result column="account" property="account"/>
         <result column="profile_picture" property="picture.img" jdbcType="BLOB" javaType="_byte[]"/>
+    </resultMap>
+
+    <resultMap id="usermapwithnoimg" type="User">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="account" property="account"/>
     </resultMap>
 
     <select id="findUsersbyGroupId" resultMap="usermap">

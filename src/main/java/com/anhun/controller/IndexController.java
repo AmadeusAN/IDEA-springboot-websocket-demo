@@ -471,5 +471,43 @@ public class IndexController {
 
         return "groupchat";
     }
+
+    @RequestMapping("/tosearchfriend")
+    public String tosearchfriend() {
+        return "searchfriend";
+    }
+
+    @RequestMapping("/initfriendlist")
+    public String initfriendlist(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("loginuser");
+        List<User> friendlist = userMapper.findFirendListById(user.getId());
+        model.addAttribute("msg", "我的好友");
+        model.addAttribute("friendlist", friendlist);
+        return "friendlist";
+    }
+
+    @RequestMapping("/searchfriend")
+    public String searchfriend(@RequestParam Integer id, @RequestParam String name, Model model) {
+        if (name.equals("") || name.trim().equals("")) name = null;
+        log.info("搜寻好友参数 id = " + id + " name = " + name);
+//        将参数封装进 POJO 类
+        if (id == 0 && name == null) {
+            model.addAttribute("msg", "查无此人");
+        } else {
+//            去掉用户输入的包围空格
+            name = name.trim();
+            User user = new User();
+            user.setId(id);
+            user.setName(name);
+            List<User> friendlist = userMapper.findFriendsByIdOrName(user);
+            if (friendlist.isEmpty()) {
+                model.addAttribute("msg", "查无此人");
+            } else {
+                model.addAttribute("msg", "查询结果");
+            }
+            model.addAttribute("friendlist", friendlist);
+        }
+        return "friendlist";
+    }
 }
 

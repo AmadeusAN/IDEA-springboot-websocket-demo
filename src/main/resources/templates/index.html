@@ -57,7 +57,7 @@
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
                        aria-expanded="false">查找</a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#scrollspyHeading3">寻找好友</a></li>
+                        <li><a class="dropdown-item" onclick="changehtmltosearchfriend()">寻找好友</a></li>
                         <li><a class="dropdown-item" onclick="changehtmltosearchgroup()">寻找群组</a></li>
                         <li>
                             <hr class="dropdown-divider">
@@ -279,6 +279,12 @@
         frame.src = "/tosearchgroup";
         $('#myiframe').attr('src', $('#myiframe').attr('src'));
         // alert(frame.src);
+    }
+
+    function changehtmltosearchfriend() {
+        var frame = document.getElementById("myiframe");
+        frame.src = "/tosearchfriend";
+        $('#myiframe').attr('src', $('#myiframe').attr('src'));
     }
 
     function changehtmltochatgroud() {
