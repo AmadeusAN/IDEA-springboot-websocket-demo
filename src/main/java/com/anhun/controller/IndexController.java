@@ -7,6 +7,8 @@ import com.anhun.entity.User;
 import com.anhun.mapper.EventMapper;
 import com.anhun.mapper.GroupMapper;
 import com.anhun.mapper.UserMapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -531,16 +533,19 @@ public class IndexController {
     }
 
     @RequestMapping("/initfriendlist")
-    public String initfriendlist(Model model, HttpSession session) {
+    public String initfriendlist(Model model, @RequestParam(value = "start", defaultValue = "1") Integer start, HttpSession session) {
         User user = (User) session.getAttribute("loginuser");
+        PageHelper.startPage(start, 8);
         List<User> friendlist = userMapper.findFirendListById(user.getId());
+        PageInfo<User> userPageInfo = new PageInfo<>(friendlist);
+
         model.addAttribute("msg", "我的好友");
-        model.addAttribute("friendlist", friendlist);
-        return "friendlist";
+        model.addAttribute("userPageInfo", userPageInfo);
+        return "myfriendlist";
     }
 
     @RequestMapping("/searchfriend")
-    public String searchfriend(@RequestParam Integer id, @RequestParam String name, Model model) {
+    public String searchfriend(@RequestParam Integer id, @RequestParam String name, @RequestParam(value = "start", defaultValue = "1") Integer start, Model model) {
         if (name.equals("") || name.trim().equals("")) name = null;
         log.info("搜寻好友参数 id = " + id + " name = " + name);
 //        将参数封装进 POJO 类
@@ -549,16 +554,25 @@ public class IndexController {
         } else {
 //            去掉用户输入的包围空格
             if (name != null) name = name.trim();
+
+            model.addAttribute("id", id);
+            model.addAttribute("name", (name == null ? "" : name));
+
             User user = new User();
             user.setId(id);
             user.setName(name);
+//            设置分页逻辑
+            PageHelper.startPage(start, 8);
+
             List<User> friendlist = userMapper.findFriendsByIdOrName(user);
+            PageInfo<User> userPageInfo = new PageInfo<>(friendlist);
+
             if (friendlist.isEmpty()) {
                 model.addAttribute("msg", "查无此人");
             } else {
                 model.addAttribute("msg", "查询结果");
             }
-            model.addAttribute("friendlist", friendlist);
+            model.addAttribute("userPageInfo", userPageInfo);
         }
         return "friendlist";
     }

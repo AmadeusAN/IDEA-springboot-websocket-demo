@@ -51,7 +51,8 @@
             <li class="page-item"><a th:href="@{/searchgroup/__${groupName}__?start=__${groupPageInfo.pageNum-1}__}"
                                      th:if="${groupPageInfo.pageNum>1}" th:text="${groupPageInfo.pageNum-1}"
                                      class="page-link"></a></li>
-            <li class="page-item"><a class="page-link text-success" href="#" th:text="${groupPageInfo.pageNum}"></a></li>
+            <li class="page-item"><a class="page-link text-success" href="#" th:text="${groupPageInfo.pageNum}"></a>
+            </li>
             <li class="page-item"><a th:href="@{/searchgroup/__${groupName}__?start=__${groupPageInfo.pageNum+1}__}"
                                      th:if="${groupPageInfo.pageNum<groupPageInfo.pages}"
                                      th:text="${groupPageInfo.pageNum+1}"
