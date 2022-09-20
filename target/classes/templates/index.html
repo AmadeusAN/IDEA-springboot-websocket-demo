@@ -91,6 +91,7 @@
                                    class="list-group-item d-flex align-items-center py-3 lh-tight btn-outline-success"
                                    aria-current="true">
                                     <img th:src="@{/img/__${user.id}___profile_picture.jpg}"
+                                         onerror="this.src='/img/userdefaultimg.png'"
                                          class="shadow rounded-circle me-2 "
                                          width="60px"
                                          height="60px"/>

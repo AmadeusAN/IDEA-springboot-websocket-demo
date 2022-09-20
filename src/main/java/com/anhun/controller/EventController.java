@@ -94,6 +94,7 @@ public class EventController {
             int res = eventMapper.insertUserGroup(event);
             if (res > 0) {
                 eventMapper.deleteEventById(eventId);
+                log.info("将成功执行的事件从数据库中删除，事件ID为 " + event.getEventId());
                 return "同意其进入群组";
             } else {
                 return "error";

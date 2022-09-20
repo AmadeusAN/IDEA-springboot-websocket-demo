@@ -27,6 +27,7 @@
             <!--            其他人发送的消息-->
             <div th:if="${event.fromId != myself.id}" class="mb-2 d-flex align-items-center">
                 <img th:src="@{/img/__${event.fromId}___profile_picture.jpg}" class="shadow rounded-circle me-2"
+                     onerror="this.src='/img/userdefaultimg.png'"
                      width="80px"
                      height="80px"/>
                 <div class="d-inline-block btn-primary shadow rounded-3 p-2   mb-2" style="min-width: 25%;">
@@ -36,7 +37,7 @@
             </div>
             <!--            我发给群组的消息-->
             <div th:if="${event.fromId == myself.id}" class="mb-2 d-flex flex-row-reverse  align-items-center">
-                <img th:src="@{/img/__${myself.id}___profile_picture.jpg}" class="shadow rounded-circle me-2  "
+                <img th:src="@{/img/__${myself.id}___profile_picture.jpg?t=__${#dates.createNow()}__}" class="shadow rounded-circle me-2  "
                      width="80px" height="80px"/>
                 <div class="me-2 d-inline-block  shadow rounded-3 p-2  mb-2" style="min-width: 25%;">
                     <h5 class="border-bottom pb-1" th:text="me"></h5>
@@ -149,7 +150,7 @@
             newheadimg.setAttribute("width", "80px");
             newheadimg.setAttribute("height", "80px");
             var date = new Date();
-            newheadimg.setAttribute("src", "/img/" + recvevent.fromId + "_profile_picture.jpg?t=" + date);
+
             newblock.setAttribute("style", "min-width: 25%;");
 
             if (recvevent.fromId != userid) {
@@ -157,11 +158,12 @@
                 newmsg.setAttribute("class", "mb-2 d-flex align-items-center");
 
                 newblock.setAttribute("class", "d-inline-block btn-primary  shadow border rounded-3 p-2   mb-2");
-
+                newheadimg.setAttribute("src", "/img/" + recvevent.fromId + "_profile_picture.jpg");
             } else {
                 //自己界面显示自己发送的消息
                 newmsg.setAttribute("class", "mb-2 d-flex flex-row-reverse align-items-center");
                 newblock.setAttribute("class", "me-2 d-inline-block shadow  rounded-3 p-2  mb-2");
+                newheadimg.setAttribute("src", "/img/" + recvevent.fromId + "_profile_picture.jpg?t=" + date);
             }
             var newname = document.createElement('h5');
             newname.setAttribute("class", "border-bottom pb-1");

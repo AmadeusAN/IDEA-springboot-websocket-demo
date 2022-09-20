@@ -2,6 +2,7 @@ package com.anhun.controller;
 
 import com.anhun.entity.Event;
 import com.anhun.entity.Group;
+import com.anhun.entity.ProfilePicture;
 import com.anhun.entity.User;
 import com.anhun.mapper.EventMapper;
 import com.anhun.mapper.GroupMapper;
@@ -368,11 +369,16 @@ public class IndexController {
                 if (Files.exists(imgfile.toPath())) {
                     log.info("对方头像在目录缓存中");
                 } else {
-                    byte[] file = userMapper.findUserProfilePictureById(id).getImg();
-                    fos = new FileOutputStream(imgfile);
-                    bos = new BufferedOutputStream(fos);
-                    bos.write(file);
-                    log.info("对方头像未在缓存目录中，已重新下载");
+                    ProfilePicture picture = userMapper.findUserProfilePictureById(id);
+                    if (picture != null) {
+                        byte[] file = picture.getImg();
+                        fos = new FileOutputStream(imgfile);
+                        bos = new BufferedOutputStream(fos);
+                        bos.write(file);
+                        log.info("对方头像未在缓存目录中，已重新下载");
+                    } else {
+                        log.info("对方未设置头像，已采用默认头像");
+                    }
                 }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();

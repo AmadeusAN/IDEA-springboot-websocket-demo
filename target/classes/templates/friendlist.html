@@ -18,6 +18,7 @@
                         <div class="col-4">
                             <h4 class="visually-hidden" th:text="*{id}"></h4>
                             <img th:src="@{/img/__*{id}___profile_picture.jpg}" class="shadow rounded-circle me-2 "
+                                 onerror="this.src='/img/userdefaultimg.png'"
                                  width="60px"
                                  height="60px"/>
                         </div>
