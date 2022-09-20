@@ -7,7 +7,6 @@ import com.anhun.mapper.GroupMapper;
 import com.anhun.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -32,28 +31,31 @@ public class EventController {
     private UserMapper userMapper;
 
     @RequestMapping("/applyforfriend/{targetId}")
-    public String applyfrined(@PathVariable Integer targetId, HttpServletRequest request, Model model) throws ParseException {
+    @ResponseBody
+    public String applyfrined(@PathVariable Integer targetId, HttpServletRequest request) throws ParseException {
         User senduser = (User) request.getSession().getAttribute("loginuser");
         User touser = (User) userMapper.findUserById(targetId);
-        model.addAttribute("user", touser);
-        Event ifexist = eventMapper.findApplyEvent(senduser.getId(), targetId);
-        if (ifexist != null) {
-            model.addAttribute("msg", "已经发送过好友请求了");
-            eventMapper.alterEventSendTime(senduser.getId(), targetId, new Date());
-            return "user";
+        int res = userMapper.findfriendshipifExist(senduser.getId(), touser.getId());
+        if (res == 1) {
+            return "你们已经是好友了";
         } else {
-            if (targetId == senduser.getId()) {
-                model.addAttribute("msg", "不能添加自己为好友");
-                return "user";
+            Event ifexist = eventMapper.findApplyEvent(senduser.getId(), targetId);
+            if (ifexist != null) {
+                log.info("检测到该好友请求已存在");
+                eventMapper.alterEventSendTime(senduser.getId(), targetId, new Date());
+                return "已经发送过好友请求了";
             } else {
-                Event event = new Event(senduser.getId(), senduser.getName(), targetId, 1, "新的好友申请", new Date());
-                int res = eventMapper.addEvent(event);
-                if (res == 1) {
-                    model.addAttribute("msg", "成功发送好友请求");
-                    return "user";
+                if (targetId == senduser.getId()) {
+//                试图添加自己为好友
+                    return "不能添加自己为好友";
                 } else {
-                    model.addAttribute("msg", "请求发生错误");
-                    return "user";
+                    Event event = new Event(senduser.getId(), senduser.getName(), targetId, 1, "新的好友申请", new Date());
+                    int res2 = eventMapper.addEvent(event);
+                    if (res2 == 1) {
+                        return "成功发送好友请求";
+                    } else {
+                        return "请求发生错误";
+                    }
                 }
             }
         }

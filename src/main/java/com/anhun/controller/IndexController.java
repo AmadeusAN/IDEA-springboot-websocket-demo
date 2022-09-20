@@ -226,7 +226,7 @@ public class IndexController {
         User user = userMapper.findUserById(id);
         if (user != null) {
             model.addAttribute("user", user);
-            return "user";
+            return "userinfo";
         } else {
             return "error";
         }
@@ -237,7 +237,7 @@ public class IndexController {
         User user = userMapper.findUserById(id);
         if (user != null) {
             model.addAttribute("user", user);
-            return "user";
+            return "userinfo";
         } else {
             model.addAttribute("msg", "查无此人");
             model.addAttribute("friendlist", userMapper.findFirendListById(((User) session.getAttribute("loginuser")).getId()));
@@ -477,6 +477,13 @@ public class IndexController {
         return "searchfriend";
     }
 
+    @RequestMapping("/touserinfo/{userid}")
+    public String touserinfo(@PathVariable Integer userid, Model model) {
+        User user = userMapper.findUserById(userid);
+        model.addAttribute("user", user);
+        return "userinfo";
+    }
+
     @RequestMapping("/initfriendlist")
     public String initfriendlist(Model model, HttpSession session) {
         User user = (User) session.getAttribute("loginuser");
@@ -495,7 +502,7 @@ public class IndexController {
             model.addAttribute("msg", "查无此人");
         } else {
 //            去掉用户输入的包围空格
-            name = name.trim();
+            if (name != null) name = name.trim();
             User user = new User();
             user.setId(id);
             user.setName(name);

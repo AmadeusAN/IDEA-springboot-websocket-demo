@@ -100,5 +100,11 @@
         where ug.group_id = #{id}
     </select>
 
+    <select id="findfriendshipifExist" resultType="int">
+        select count(*)
+        from `friendship`
+        where idv = #{idv}
+          and idw = #{idw}
+    </select>
 
 </mapper>
