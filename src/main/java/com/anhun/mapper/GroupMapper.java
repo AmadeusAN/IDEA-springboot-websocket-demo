@@ -30,7 +30,7 @@ public interface GroupMapper {
 
     /**
      * 寻找群组人数最多的若干群组
-     * <strong>暂未开启分页功能，因此暂时只查询三个</strong>
+     * <strong>开启分页功能</strong>
      *
      * @return
      */
@@ -56,6 +56,8 @@ public interface GroupMapper {
 
     /**
      * <p>根据用户上传的字符串匹配群组名称</p>
+     * <strong>已开启分页功能</strong>
+     *
      * @param groupName
      * @return
      */

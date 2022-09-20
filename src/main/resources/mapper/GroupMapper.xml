@@ -39,7 +39,7 @@
     <select id="searchPopularGrouplist" resultType="Group">
         select *
         from `groups`
-        order by member_count desc limit 3
+        order by member_count desc
     </select>
 
     <select id="findGroupIfExist">

@@ -8,16 +8,16 @@
 
 <body>
 <div class="">
-    <h5 class="p-3 mb-1  border-bottom">推荐群组</h5>
+    <h5 class="p-3 mb-1  border-bottom">查找结果</h5>
     <div class="friendlist d-flex flex-column   p-3">
 
-        <div class="card mb-3 align-self-center" th:each="group :${grouplist}" style="max-width: 540px;">
+        <div class="card mb-3 align-self-center" th:each="group :${groupPageInfo.getList()}" style="max-width: 540px;">
             <div class="row g-0 h-100 align-items-center">
                 <div class="col-3 h-100">
                     <img
-                         th:src="@{/img/groupimg/__${group.groupId}___group_profile_picture.jpg}"
-                         onerror="this.src='/img/groupdefaultimg.jpeg'"
-                         class="img-fluid rounded-start " alt="...">
+                            th:src="@{/img/groupimg/__${group.groupId}___group_profile_picture.jpg}"
+                            onerror="this.src='/img/groupdefaultimg.jpeg'"
+                            class="img-fluid rounded-start " alt="...">
 
                 </div>
                 <div class="col-9">
@@ -42,15 +42,27 @@
 <div class="fixed-bottom">
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
-            <li class="page-item disabled">
-                <a class="page-link">Previous</a>
+            <li class="page-item" th:if="${groupPageInfo.pageNum > 1}">
+                <a class="page-link" th:href="@{/searchgroup/__${groupName}__?start=__${groupPageInfo.pageNum-1}__}">Previous</a>
             </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#">Next</a>
+            <li class="page-item disabled" th:if="${groupPageInfo.pageNum == 1}">
+                <a class="page-link" th:href="@{/searchgroup/__${groupName}__?start=__${groupPageInfo.pageNum-1}__}">Previous</a>
             </li>
+            <li class="page-item"><a th:href="@{/searchgroup/__${groupName}__?start=__${groupPageInfo.pageNum-1}__}"
+                                     th:if="${groupPageInfo.pageNum>1}" th:text="${groupPageInfo.pageNum-1}"
+                                     class="page-link"></a></li>
+            <li class="page-item"><a class="page-link text-success" href="#" th:text="${groupPageInfo.pageNum}"></a></li>
+            <li class="page-item"><a th:href="@{/searchgroup/__${groupName}__?start=__${groupPageInfo.pageNum+1}__}"
+                                     th:if="${groupPageInfo.pageNum<groupPageInfo.pages}"
+                                     th:text="${groupPageInfo.pageNum+1}"
+                                     class="page-link"></a></li>
+            <li class="page-item" th:if="${groupPageInfo.pageNum < groupPageInfo.getPages()}">
+                <a class="page-link" th:href="@{/searchgroup/__${groupName}__?start=__${groupPageInfo.pageNum+1}__}">Next</a>
+            </li>
+            <li class="page-item disabled" th:if="${groupPageInfo.pageNum == groupPageInfo.getPages()}">
+                <a class="page-link" th:href="@{/searchgroup/__${groupName}__?start=__${groupPageInfo.pageNum+1}__}">Next</a>
+            </li>
+
         </ul>
     </nav>
 </div>

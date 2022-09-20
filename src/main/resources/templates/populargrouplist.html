@@ -8,7 +8,7 @@
 
 <body>
 <div class="">
-    <h5 class="p-3 mb-1  border-bottom">查找结果</h5>
+    <h5 class="p-3 mb-1  border-bottom">推荐群组</h5>
     <div class="friendlist d-flex flex-column   p-3">
 
         <div class="card mb-3 align-self-center" th:each="group :${groupPageInfo.getList()}" style="max-width: 540px;">
@@ -43,25 +43,25 @@
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
             <li class="page-item" th:if="${groupPageInfo.pageNum > 1}">
-                <a class="page-link" th:href="@{/searchgroup/__${groupName}__?start=__${groupPageInfo.pageNum-1}__}">Previous</a>
+                <a class="page-link" th:href="@{/initGroupList?start=__${groupPageInfo.pageNum-1}__}">Previous</a>
             </li>
             <li class="page-item disabled" th:if="${groupPageInfo.pageNum == 1}">
-                <a class="page-link" th:href="@{/searchgroup/__${groupName}__?start=__${groupPageInfo.pageNum-1}__}">Previous</a>
+                <a class="page-link" th:href="@{/initGroupList?start=__${groupPageInfo.pageNum-1}__}">Previous</a>
             </li>
-            <li class="page-item"><a th:href="@{/searchgroup/__${groupName}__?start=__${groupPageInfo.pageNum-1}__}"
+            <li class="page-item"><a th:href="@{/initGroupList?start=__${groupPageInfo.pageNum-1}__}"
                                      th:if="${groupPageInfo.pageNum>1}" th:text="${groupPageInfo.pageNum-1}"
                                      class="page-link"></a></li>
             <li class="page-item"><a class="page-link text-success" href="#" th:text="${groupPageInfo.pageNum}"></a>
             </li>
-            <li class="page-item"><a th:href="@{/searchgroup/__${groupName}__?start=__${groupPageInfo.pageNum+1}__}"
+            <li class="page-item"><a th:href="@{/initGroupList?start=__${groupPageInfo.pageNum+1}__}"
                                      th:if="${groupPageInfo.pageNum<groupPageInfo.pages}"
                                      th:text="${groupPageInfo.pageNum+1}"
                                      class="page-link"></a></li>
             <li class="page-item" th:if="${groupPageInfo.pageNum < groupPageInfo.getPages()}">
-                <a class="page-link" th:href="@{/searchgroup/__${groupName}__?start=__${groupPageInfo.pageNum+1}__}">Next</a>
+                <a class="page-link" th:href="@{/initGroupList?start=__${groupPageInfo.pageNum+1}__}">Next</a>
             </li>
             <li class="page-item disabled" th:if="${groupPageInfo.pageNum == groupPageInfo.getPages()}">
-                <a class="page-link" th:href="@{/searchgroup/__${groupName}__?start=__${groupPageInfo.pageNum+1}__}">Next</a>
+                <a class="page-link" th:href="@{/initGroupList?start=__${groupPageInfo.pageNum+1}__}">Next</a>
             </li>
 
         </ul>

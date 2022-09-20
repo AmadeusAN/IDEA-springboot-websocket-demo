@@ -6,6 +6,8 @@ import com.anhun.entity.User;
 import com.anhun.mapper.EventMapper;
 import com.anhun.mapper.GroupMapper;
 import com.anhun.mapper.UserMapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,6 +42,7 @@ public class GroupController {
 
     /**
      * <p>用于主页跳转搜索群组页面</p>
+     *
      * @param model
      * @return
      */
@@ -50,23 +53,33 @@ public class GroupController {
 
     /**
      * <p>搜索群组并返回相关结果</p>
+     *
      * @param groupName
      * @param model
      * @return
      */
     @RequestMapping("/searchgroup/{groupName}")
-    public String searchgroup(@PathVariable String groupName, Model model) {
-        List<Group> groupList = groupMapper.findGroupsByGroupName(groupName);
-        model.addAttribute("grouplist", groupList);
+    public String searchgroup(@PathVariable String groupName, @RequestParam(value = "start", defaultValue = "1") Integer start, Model model) {
+        PageHelper.startPage(start, 3);
+        List<Group> groups = groupMapper.findGroupsByGroupName(groupName);
+        PageInfo<Group> groupPageInfo = new PageInfo<>(groups);
+        model.addAttribute("groupName", groupName);
+        model.addAttribute("groupPageInfo", groupPageInfo);
         return "grouplist";
     }
 
     @RequestMapping("/initGroupList")
-    public String initGroupList(Model model) {
-        List<Group> groupList = groupMapper.searchPopularGrouplist();
-        model.addAttribute("grouplist", groupList);
+    public String initGroupList(@RequestParam(value = "start", defaultValue = "1") Integer start, Model model) {
+//        设置页码与每页的大小
+        PageHelper.startPage(start, 3);
 
-        return "grouplist";
+        List<Group> groups = groupMapper.searchPopularGrouplist();
+
+        PageInfo<Group> groupPageInfo = new PageInfo<>(groups);
+
+        model.addAttribute("groupPageInfo", groupPageInfo);
+
+        return "populargrouplist";
     }
 
     @RequestMapping("/toInsertgroup")
