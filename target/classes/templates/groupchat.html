@@ -37,7 +37,8 @@
             </div>
             <!--            我发给群组的消息-->
             <div th:if="${event.fromId == myself.id}" class="mb-2 d-flex flex-row-reverse  align-items-center">
-                <img th:src="@{/img/__${myself.id}___profile_picture.jpg?t=__${#dates.createNow()}__}" class="shadow rounded-circle me-2  "
+                <img th:src="@{/img/__${myself.id}___profile_picture.jpg?t=__${#dates.createNow()}__}"
+                     class="shadow rounded-circle me-2  "
                      width="80px" height="80px"/>
                 <div class="me-2 d-inline-block  shadow rounded-3 p-2  mb-2" style="min-width: 25%;">
                     <h5 class="border-bottom pb-1" th:text="me"></h5>

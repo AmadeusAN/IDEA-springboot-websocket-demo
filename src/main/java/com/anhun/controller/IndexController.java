@@ -63,7 +63,7 @@ public class IndexController {
      */
     @RequestMapping("/finduserProfilepicture")
     @ResponseBody
-    public void findAndSaveUserProfilePicture(HttpSession session) {
+    public void finduserProfilepicture(HttpSession session) {
         log.info("初次加载项目时该处可能会报错");
         BufferedOutputStream bos = null;
         FileOutputStream fos = null;
@@ -118,7 +118,7 @@ public class IndexController {
      */
     @RequestMapping("/finduserProfilePicture/{id}")
     @ResponseBody
-    public void findTargetUserProfilePicture(@PathVariable Integer id) {
+    public void finduserProfilepictureByid(@PathVariable Integer id) {
         //            加载目标用户头像
         BufferedOutputStream bos = null;
         FileOutputStream fos = null;
@@ -134,11 +134,16 @@ public class IndexController {
             if (Files.exists(imgfile.toPath())) {
                 log.info("id为 " + id + " 的头像在目录缓存中");
             } else {
-                byte[] file = userMapper.findUserProfilePictureById(id).getImg();
-                fos = new FileOutputStream(imgfile);
-                bos = new BufferedOutputStream(fos);
-                bos.write(file);
-                log.info("id为 " + id + " 的头像未在缓存目录中，已重新下载");
+                ProfilePicture picture = userMapper.findUserProfilePictureById(id);
+                if (picture != null) {
+                    byte[] file = picture.getImg();
+                    fos = new FileOutputStream(imgfile);
+                    bos = new BufferedOutputStream(fos);
+                    bos.write(file);
+                    log.info("id为 " + id + " 的头像未在缓存目录中，已重新下载");
+                } else {
+                    log.info("id为 " + id + " 的用户未设置头像，已采用默认头像");
+                }
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -270,13 +275,13 @@ public class IndexController {
         List<User> friendList = userMapper.findFirendListById(user.getId());
         model.addAttribute("friendList", friendList);
 
-//        加载用户群组头像
         int id = user.getId();
         List<Group> groups = groupMapper.findGroupByUserId(id);
         model.addAttribute("grouplist", groups);
         BufferedOutputStream bos = null;
         FileOutputStream fos = null;
         try {
+            log.info("加载用户所属群组头像");
             String path = ResourceUtils.getURL("classpath:").getPath() + "static/img/groupimg";
             File savefile = new File(path);
             if (!savefile.exists() || !savefile.isDirectory()) {
@@ -297,6 +302,31 @@ public class IndexController {
                         log.info("group_id为 " + group.getGroupId() + " 的头像未在缓存目录中，已重新下载");
                     } else {
                         log.info("group_id为 " + group.getGroupId() + " 为自定义头像，使用默认头像");
+                    }
+                }
+            }
+
+            log.info("加载用户好友头像");
+            String path2 = ResourceUtils.getURL("classpath:").getPath() + "static/img";
+            savefile = new File(path2);
+            if (!savefile.exists() || !savefile.isDirectory()) {
+                savefile.mkdirs();
+            }
+            for (User friend : friendList) {
+                String filename = friend.getId() + "_profile_picture.jpg";
+                File imgfile = new File(path2, filename);
+//            图片保存在服务器目录中
+                if (Files.exists(imgfile.toPath())) {
+                    log.info("id为 " + friend.getId() + " 的用户头像在目录缓存中");
+                } else {
+                    if (friend.getPicture() != null) {
+                        byte[] file = friend.getPicture().getImg();
+                        fos = new FileOutputStream(imgfile);
+                        bos = new BufferedOutputStream(fos);
+                        bos.write(file);
+                        log.info("id为 " + friend.getId() + " 的头像未在缓存目录中，已重新下载");
+                    } else {
+                        log.info("id为 " + friend.getId() + " 的用户未设置头像，已使用默认头像");
                     }
                 }
             }

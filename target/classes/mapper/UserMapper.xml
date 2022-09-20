@@ -31,10 +31,12 @@
         <id property="id" column="id"/>
         <result property="account" column="account"/>
         <result property="name" column="name"/>
+        <result property="lastLogin" column="last_login" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result property="picture.img" column="profile_picture" javaType="_byte[]" jdbcType="BLOB"/>
     </resultMap>
 
     <select id="findFirendListById" resultMap="userlistMap">
-        select id, name, account, last_login
+        select id, name, account, last_login,profile_picture
         from user,
              friendship as f
         where f.idv = #{id}
