@@ -127,11 +127,11 @@
                                    aria-current="true">
 
                                     <img
-                                         th:src="@{/img/groupimg/__${group.groupId}___group_profile_picture.jpg}"
-                                         onerror="this.src='/img/groupdefaultimg.jpeg'"
-                                         class="shadow rounded-circle me-2 "
-                                         width="60px"
-                                         height="60px"/>
+                                            th:src="@{/img/groupimg/__${group.groupId}___group_profile_picture.jpg}"
+                                            onerror="this.src='/img/groupdefaultimg.jpeg'"
+                                            class="shadow rounded-circle me-2 "
+                                            width="60px"
+                                            height="60px"/>
                                     <div class="w-100 h-100 ">
                                         <div class="d-flex h-50 w-100 align-items-center justify-content-between">
                                             <strong class="mb-1" th:text="|群组:| + ${group.groupName}"></strong>
@@ -308,20 +308,21 @@
         })
     }
 
-    window.onload = function () {
-        $.ajax({
-            url: 'finduserProfilepicture',
-            success: function (data) {
-            }
-        })
-
-        // $.ajax({
-        //     url: '/loadgroupimg',
-        //     success: function (data) {
-        //         alert(data);
-        //     }
-        // })
-    }
+    // 等到页面加载完毕后再运行该函数会导致图片加载不出来
+    // window.onload = function () {
+    //     $.ajax({
+    //         url: 'finduserProfilepicture',
+    //         success: function (data) {
+    //         }
+    //     })
+    //
+    //     // $.ajax({
+    //     //     url: '/loadgroupimg',
+    //     //     success: function (data) {
+    //     //         alert(data);
+    //     //     }
+    //     // })
+    // }
 </script>
 
 </body>

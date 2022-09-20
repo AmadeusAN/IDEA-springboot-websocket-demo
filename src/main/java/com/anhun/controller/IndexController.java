@@ -64,7 +64,7 @@ public class IndexController {
     @RequestMapping("/finduserProfilepicture")
     @ResponseBody
     public void finduserProfilepicture(HttpSession session) {
-        log.info("初次加载项目时该处可能会报错");
+//        log.info("初次加载项目时该处可能会报错");
         BufferedOutputStream bos = null;
         FileOutputStream fos = null;
         try {
@@ -81,13 +81,18 @@ public class IndexController {
 
 //            头像保存在服务器目录中
             if (Files.exists(imgfile.toPath())) {
-                log.info("头像在目录缓存中");
+                log.info("登录用户头像在目录缓存中");
             } else {
-                byte[] file = userMapper.findUserProfilePictureById(user.getId()).getImg();
-                fos = new FileOutputStream(imgfile);
-                bos = new BufferedOutputStream(fos);
-                bos.write(file);
-                log.info("头像未在缓存目录中，已重新下载");
+                ProfilePicture picture = userMapper.findUserProfilePictureById(user.getId());
+                if (picture != null) {
+                    byte[] file = picture.getImg();
+                    fos = new FileOutputStream(imgfile);
+                    bos = new BufferedOutputStream(fos);
+                    bos.write(file);
+                    log.info("登录用户头像未在缓存目录中，已重新下载");
+                } else {
+                    log.info("登录用户未设置头像，已采用默认头像");
+                }
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -269,17 +274,21 @@ public class IndexController {
      */
     @RequestMapping("/toIndex")
     public String toindex(HttpSession session, Model model) {
+//        加载事件列表、好友列表、群组列表
         User user = (User) session.getAttribute("loginuser");
         model.addAttribute("eventlist", eventMapper.findPendingEvent(user));
         model.addAttribute("user", user);
         List<User> friendList = userMapper.findFirendListById(user.getId());
         model.addAttribute("friendList", friendList);
-
         int id = user.getId();
         List<Group> groups = groupMapper.findGroupByUserId(id);
         model.addAttribute("grouplist", groups);
         BufferedOutputStream bos = null;
         FileOutputStream fos = null;
+
+        log.info("尝试调用其他处理方法");
+        finduserProfilepicture(session);
+
         try {
             log.info("加载用户所属群组头像");
             String path = ResourceUtils.getURL("classpath:").getPath() + "static/img/groupimg";
@@ -312,6 +321,7 @@ public class IndexController {
             if (!savefile.exists() || !savefile.isDirectory()) {
                 savefile.mkdirs();
             }
+
             for (User friend : friendList) {
                 String filename = friend.getId() + "_profile_picture.jpg";
                 File imgfile = new File(path2, filename);

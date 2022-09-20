@@ -20,6 +20,7 @@
             <!--            我发送过的消息-->
             <div th:if="${event.fromId == user.id}" class="mb-2 d-flex flex-row-reverse align-items-center">
                 <img th:src="@{/img/__${event.fromId}___profile_picture.jpg?t=__${#dates.createNow()}__}"
+                     onerror="this.src='/img/userdefaultimg.png'"
                      class="shadow rounded-circle me-2  "
                      width="80px" height="80px"/>
                 <div class="me-2 btn-primary  shadow  rounded-3 p-2   mb-2" style="min-width: 25%;">
