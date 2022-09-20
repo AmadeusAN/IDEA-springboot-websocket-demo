@@ -31,6 +31,15 @@ public interface UserMapper {
      */
     List<User> findFriendsByIdOrName(User user);
 
+    /**
+     * <p>寻找是否存在该好友关系</p>
+     *
+     * @param idv
+     * @param idw
+     * @return
+     */
+    int findfriendshipifExist(int idv, int idw);
+
     ProfilePicture findUserProfilePictureById(int id);
 
     int updateUserLastLogin(int id, Date date);
