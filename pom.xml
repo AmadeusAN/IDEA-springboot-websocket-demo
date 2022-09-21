@@ -109,6 +109,13 @@
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
+        <!--        druid 数据库连接池-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>1.1.16</version>
+        </dependency>
+
 
     </dependencies>
     <build>
