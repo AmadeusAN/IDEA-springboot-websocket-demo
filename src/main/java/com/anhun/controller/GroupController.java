@@ -1,5 +1,6 @@
 package com.anhun.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.anhun.entity.Event;
 import com.anhun.entity.Group;
 import com.anhun.entity.User;
@@ -122,18 +123,24 @@ public class GroupController {
 //        log.info("后台接收到的单独的数据为 groupName = " + groupName + " groupDescript = " + groupDescript);
         User manager = (User) session.getAttribute("loginuser");
         group.setManagerId(manager.getId());
-
+        Event response = new Event();
         int exist = groupMapper.findGroupIfExist(group.getGroupName(), manager.getId());
         if (exist == 1) {
-            return "该群组已存在";
+            response.setState(1);
+            response.setMessage("该群组已存在");
+            return JSONObject.toJSONString(response);
         } else {
             int res = groupMapper.insertGroup(group);
             int res1 = groupMapper.insertusergroup(manager.getId(), group.getGroupId());
 //        return "直接返回的数据";
             if (res == 1 && res1 == 1) {
-                return "成功创建群组";
+                response.setState(2);
+                response.setMessage("成功创建群组");
+                return JSONObject.toJSONString(response);
             } else {
-                return "创建群组失败";
+                response.setState(3);
+                response.setMessage("创建群组失败");
+                return JSONObject.toJSONString(response);
             }
         }
     }

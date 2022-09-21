@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>登录页面</title>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <style>
 
     </style>
@@ -13,27 +13,45 @@
     <form class="mb-3  w-50  align-self-center" th:action="@{/trylogin}" th:object="${user}">
         <figure>用户登录</figure>
         <div class="form-floating mb-3">
-            <input class="form-control" th:field="*{account}" type="text" placeholder="user-account"/>
+            <input class="form-control" th:field="*{account}" th:value="*{account}" type="text"
+                   placeholder="user-account"/>
             <label for="account">account</label>
         </div>
 
         <div class="form-floating mb-3">
-            <input class="form-control" th:field="*{password}" type="password" placeholder="user-password"/>
+            <input class="form-control" th:field="*{password}" th:value="*{password}" type="password"
+                   placeholder="user-password"/>
             <label for="password">password</label>
         </div>
         <div class="d-grid mb-3">
             <button class="btn btn-outline-success" type="submit">登录</button>
         </div>
 
-        <span>
+        <span class="mb-2">
 			<a class="btn btn-outline-secondary" th:href="@{/register}">注册账号</a>
 		    </span>
-        <div class="alert-danger" th:text="${msg}"/>
+        <div id="alert" class="alert mt-2 alert-danger alert-dismissible fade show visually-hidden" role="alert">
+            <strong id="msg" th:text="${msg}"></strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     </form>
 
 
-    <script src="js/jquery-3.6.0.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <script th:src="@{/js/jquery-3.6.0.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script type="text/javascript">
+        window.onload = checkifshowalert;
+
+        function checkifshowalert() {
+            var message = document.getElementById("msg").innerHTML;
+            // alert(message);
+            if (message === "") {
+
+            } else {
+                document.getElementById("alert").className = "alert alert-danger alert-dismissible fade show";
+            }
+        }
+    </script>
 </div>
 </body>
 </html>
