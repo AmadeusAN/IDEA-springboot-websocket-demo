@@ -9,7 +9,7 @@
 
 <body class="d-flex vh-100">
 <div class="w-100  main p-3">
-    <div class="mb-3 border-bottom p-3">
+    <div class="border-bottom p-3">
         <div class="row">
             <div class="col align-self-center">
                 <h3 class="d-inline">正在</h3>
@@ -22,7 +22,7 @@
         </div>
 
     </div>
-    <div class="message" style="overflow-y: auto;height: 60%;">
+    <div class="message" style="overflow-y: auto;height: 62%;">
         <div th:each="event : ${historymessage}">
             <!--            其他人发送的消息-->
             <div th:if="${event.fromId != myself.id}" class="mb-2 d-flex align-items-center">

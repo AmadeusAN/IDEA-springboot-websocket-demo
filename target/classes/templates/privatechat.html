@@ -9,19 +9,19 @@
 
 <body class="d-flex vh-100">
 <div class="w-100  main p-3">
-    <div class="mb-3 border-bottom p-3">
+    <div class="border-bottom p-2">
         <div>
             <h3 class="d-inline">正在与 </h3>
             <h3 th:text="${user.name}" class="d-inline text-success"></h3>
             <h3 class="d-inline-block">对话</h3>
         </div>
-        <span class="">id:</span>
-        <span id="revid" th:text="${user.id}"></span>
-        <button class="btn btn-outline-success" onclick="conectWebSocket()">开始畅聊</button>
-        <button class="btn btn-outline-secondary" onclick="closeWebSocket()">断开连接</button>
+        <span class="visually-hidden">id:</span>
+        <span id="revid" class="visually-hidden" th:text="${user.id}"></span>
+        <!--        <button class="btn btn-outline-success" onclick="conectWebSocket()">开始畅聊</button>-->
+        <!--        <button class="btn btn-outline-secondary" onclick="closeWebSocket()">断开连接</button>-->
     </div>
 
-    <div class="message" style="overflow-y: auto;height: 60%;">
+    <div class="message" style="overflow-y: auto;height: 62%;">
         <div th:each="event : ${historymessage}">
             <!--            对方发给自己的消息-->
             <div th:if="${event.toId == myself.id}" class="mb-2 d-flex align-items-center">
@@ -60,15 +60,17 @@
 <script th:src="@{/js/jquery-3.6.0.min.js}"></script>
 <script th:src="@{/js/bootstrap.min.js}"></script>
 <script type="text/javascript">
-    // window.onload = conectWebSocket();
+    window.onload = connect();
 
     var websocket = null;
     var userid = null;
 
-    $.get('/getuseridfromsession', function (res) {
-        // alert(res);
-        userid = res;
-    })
+    function connect() {
+        $.get('/getuseridfromsession', function (res) {
+            userid = res;
+            conectWebSocket();
+        });
+    }
 
     function conectWebSocket() {
 

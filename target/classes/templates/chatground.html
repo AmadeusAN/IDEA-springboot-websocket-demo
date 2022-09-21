@@ -9,13 +9,13 @@
 
 <body class="d-flex vh-100">
 <div class="w-100  main p-3">
-    <div class="mb-3 border-bottom p-3">
-        <button class="btn btn-success" onclick="conectWebSocket()">连接WebSocket</button>
-        <button class="btn btn-secondary" onclick="closeWebSocket()">断开连接</button>
-        <button class="btn btn-light" type="button"><a th:href="@{/findFriends/__${#ctx.user.getId()}__}">寻找我的联系人</a>
-        </button>
+    <div class="border-bottom p-2">
+        <h5 class="d-inline text-primary">世</h5>
+        <h5 class="d-inline text-success">界</h5>
+        <h5 class="d-inline text-danger">频</h5>
+        <h5 class="d-inline text-info">道</h5>
     </div>
-    <div class="message" style="overflow-y: auto;height: 60%;">
+    <div class="message" style="overflow-y: auto;height: 65%;">
         <div th:each="event : ${historymsg}">
             <!--            我发送过的消息-->
             <div th:if="${event.fromId == user.id}" class="mb-2 d-flex flex-row-reverse align-items-center">
@@ -94,17 +94,18 @@
         })
     }
 
+    window.onload = connect();
+
     var websocket = null;
     var userid = null;
 
-    $.ajax(
-        {
-            url: 'getuseridfromsession',
-            success: function (data) {
-                // alert(data);
-                userid = data;
-            }
-        })
+    function connect() {
+        $.get('/getuseridfromsession', function (res) {
+            userid = res;
+            conectWebSocket();
+        });
+    }
+
 
     function conectWebSocket() {
 
