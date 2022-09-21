@@ -1,12 +1,18 @@
 package com.anhun.entity;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
 
 public class User {
     private int id;
     private String name;
+
+    @NotBlank(message = "账号不能为空")
     private String account;
+
+    @Size(min = 3, max = 20, message = "密码必须在3个字符到20个字符之间")
     private String password;
 
     private List<User> friendList;
@@ -25,13 +31,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", account='" + account + '\'' +
-                ", password='" + password + '\'' +
-                ", lastLogin=" + lastLogin +
-                '}';
+        return "User{" + "id=" + id + ", name='" + name + '\'' + ", account='" + account + '\'' + ", password='" + password + '\'' + ", lastLogin=" + lastLogin + '}';
     }
 
     public Date getLastLogin() {

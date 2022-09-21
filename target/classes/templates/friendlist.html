@@ -38,25 +38,31 @@
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
             <li class="page-item" th:if="${userPageInfo.pageNum > 1}">
-                <a class="page-link" th:href="@{/searchfriend?id=__${id}__&name=__${name}__&start=__${userPageInfo.pageNum-1}__}">Previous</a>
+                <a class="page-link"
+                   th:href="@{/searchfriend?id=__${id}__&name=__${name}__&start=__${userPageInfo.pageNum-1}__}">Previous</a>
             </li>
             <li class="page-item disabled" th:if="${userPageInfo.pageNum == 1}">
-                <a class="page-link" th:href="@{/searchfriend?id=__${id}__&name=__${name}__&start=__${userPageInfo.pageNum-1}__}">Previous</a>
+                <a class="page-link"
+                   th:href="@{/searchfriend?id=__${id}__&name=__${name}__&start=__${userPageInfo.pageNum-1}__}">Previous</a>
             </li>
-            <li class="page-item"><a th:href="@{/searchfriend?id=__${id}__&name=__${name}__&start=__${userPageInfo.pageNum-1}__}"
-                                     th:if="${userPageInfo.pageNum>1}" th:text="${userPageInfo.pageNum-1}"
-                                     class="page-link"></a></li>
+            <li class="page-item"><a
+                    th:href="@{/searchfriend?id=__${id}__&name=__${name}__&start=__${userPageInfo.pageNum-1}__}"
+                    th:if="${userPageInfo.pageNum>1}" th:text="${userPageInfo.pageNum-1}"
+                    class="page-link"></a></li>
             <li class="page-item"><a class="page-link text-success" href="#" th:text="${userPageInfo.pageNum}"></a>
             </li>
-            <li class="page-item"><a th:href="@{/searchfriend?id=__${id}__&name=__${name}__&start=__${userPageInfo.pageNum+1}__}"
-                                     th:if="${userPageInfo.pageNum<userPageInfo.pages}"
-                                     th:text="${userPageInfo.pageNum+1}"
-                                     class="page-link"></a></li>
+            <li class="page-item"><a
+                    th:href="@{/searchfriend?id=__${id}__&name=__${name}__&start=__${userPageInfo.pageNum+1}__}"
+                    th:if="${userPageInfo.pageNum<userPageInfo.pages}"
+                    th:text="${userPageInfo.pageNum+1}"
+                    class="page-link"></a></li>
             <li class="page-item" th:if="${userPageInfo.pageNum < userPageInfo.getPages()}">
-                <a class="page-link" th:href="@{/searchfriend?id=__${id}__&name=__${name}__&start=__${userPageInfo.pageNum+1}__}">Next</a>
+                <a class="page-link"
+                   th:href="@{/searchfriend?id=__${id}__&name=__${name}__&start=__${userPageInfo.pageNum+1}__}">Next</a>
             </li>
             <li class="page-item disabled" th:if="${userPageInfo.pageNum == userPageInfo.getPages()}">
-                <a class="page-link" th:href="@{/searchfriend?id=__${id}__&name=__${name}__&start=__${userPageInfo.pageNum+1}__}">Next</a>
+                <a class="page-link"
+                   th:href="@{/searchfriend?id=__${id}__&name=__${name}__&start=__${userPageInfo.pageNum+1}__}">Next</a>
             </li>
 
         </ul>

@@ -6,14 +6,20 @@ import com.anhun.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.Date;
+import java.util.logging.Logger;
 
 @Controller
 public class LoginController {
+
+    private static Logger log = Logger.getLogger("LoginController.class");
 
     @Autowired
     private UserMapper userMapper;
@@ -48,15 +54,32 @@ public class LoginController {
 
     }
 
+    @RequestMapping("/tologin")
+    public String tologin(Model model) {
+        User user = new User();
+        user.setName("用户姓名");
+        model.addAttribute("user", new User());
+        return "login";
+    }
+
     @RequestMapping("/trylogin")
-    public String login(@ModelAttribute("user") User user, HttpServletRequest request, Model model) {
+    public String trylogin(@Valid @ModelAttribute("user") User user, BindingResult br, HttpServletRequest request, Model model) {
+        if (br.hasErrors()) {
+            FieldError error = br.getFieldError();
+            model.addAttribute("msg", error.getDefaultMessage());
+            log.info("登录的数据为 :" + user.toString());
+            model.addAttribute("user", user);
+            return "login";
+        }
+
+
         User target = userMapper.findUserByAccount(user.getAccount());
         if (target != null && target.getPassword().equals(user.getPassword())) {
             model.addAttribute("user", target);
             request.getSession().setAttribute("loginuser", target);
             return "redirect:/toIndex";
         } else {
-            model.addAttribute("msg", "登录失败");
+            model.addAttribute("msg", "账号或密码错误");
             return "login";
         }
     }
