@@ -26,9 +26,13 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row mb-2">
                 <button type="button" onclick="getformdata()" class="btn col-2 btn-primary">Submit</button>
                 <span class="form-text col-6 align-self-center">注意：新建的群聊会将你当做管理员</span>
+            </div>
+            <div id="alert" class="alert mt-2 alert-danger alert-dismissible fade show visually-hidden" role="alert">
+                <strong id="msg" th:text="${msg}"></strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         </fieldset>
     </form>
@@ -36,6 +40,8 @@
 <script th:src="@{/js/jquery-3.6.0.min.js}"></script>
 <script th:src="@{/js/bootstrap.min.js}"></script>
 <script type="text/javascript">
+
+
     function getformdata() {
         // var formdata = $('#form').serialize();
         // alert(formdata);
@@ -45,8 +51,23 @@
             data: $('#form').serialize(),
             success: function (data) {
                 alert(data);
-                var parent = window.parent;
-                parent.location.reload();
+
+                var event = eval("(" + data + ")");
+                alert(event.message);
+
+                document.getElementById("msg").innerText = event.message;
+                if (event.state == 1) {
+                    document.getElementById("alert").className = "alert alert-danger alert-dismissible fade show";
+                    //    表示已存在群组
+                } else if (event.state == 2) {
+                    //    表示成功创建
+                    document.getElementById("alert").className = "alert alert-primary alert-dismissible fade show";
+                    var parent = window.parent;
+                    parent.location.reload();
+                } else if (event.state == 3) {
+                    //    表示创建失败
+                    document.getElementById("alert").className = "alert alert-danger alert-dismissible fade show";
+                }
             },
             error: function () {
                 alert('上传数据失败');

@@ -54,13 +54,13 @@ public class LoginController {
 
     }
 
-    @RequestMapping("/tologin")
-    public String tologin(Model model) {
-        User user = new User();
-        user.setName("用户姓名");
-        model.addAttribute("user", new User());
-        return "login";
-    }
+//    @RequestMapping("/tologin")
+//    public String tologin(Model model) {
+//        User user = new User();
+//        user.setName("用户姓名");
+//        model.addAttribute("user", new User());
+//        return "login";
+//    }
 
     @RequestMapping("/trylogin")
     public String trylogin(@Valid @ModelAttribute("user") User user, BindingResult br, HttpServletRequest request, Model model) {

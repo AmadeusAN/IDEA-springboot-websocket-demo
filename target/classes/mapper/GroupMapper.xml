@@ -42,8 +42,8 @@
         order by member_count desc
     </select>
 
-    <select id="findGroupIfExist">
-        select * from `groups`
+    <select id="findGroupIfExist" resultType="int">
+        select count(*) from `groups`
         <where>
             group_name = #{groupName} and manager_id = #{managerId}
         </where>
