@@ -221,6 +221,7 @@
                 <div class="modal-body" th:if="${event.state == 1}">
                     <a href="#">
                         <img th:src="@{/img/__${event.fromId}___profile_picture.jpg}"
+                             onerror="this.src='/img/userdefaultimg.png'"
                              class="shadow rounded-circle me-2 " width="60px"
                              height="60px"/>
                         <strong class="text-success" th:text="${event.fromName}">
@@ -231,6 +232,7 @@
                 <div class="modal-body" th:if="${event.state == 6}">
                     <a href="#">
                         <img th:src="@{/img/__${event.fromId}___profile_picture.jpg}"
+                        <!--                             onerror="this.src='/img/userdefaultimg.png'"-->
                              class="shadow rounded-circle me-2 " width="60px"
                              height="60px"/>
                         <strong class="text-success" th:text="${event.fromName}">
