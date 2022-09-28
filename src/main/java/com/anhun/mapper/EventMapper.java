@@ -81,10 +81,19 @@ public interface EventMapper {
 
     /**
      * 添加 <strong>用户与群组</strong>关系
+     *
      * @param event
      * @return
      */
     int insertUserGroup(Event event);
+
+    /**
+     * <P>添加用户与群组关系后使群组人数加一</P>
+     *
+     * @param id
+     * @return
+     */
+    int updateGroupmemberCount(int id);
 
     int deleteEventById(int id);
 

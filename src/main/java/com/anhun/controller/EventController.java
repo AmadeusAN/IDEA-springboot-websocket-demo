@@ -89,10 +89,10 @@ public class EventController {
             log.info("处理申请加入群组事件");
             int groupId = groupMapper.findGroupIdByGroupNamewithManagerId(event.getToName(), event.getToId());
             event.setToId(groupId);
-
 //           注意此处将 event的 toId 修改为 groupId 以便能正确添加进 usergroup 中，原本的含义是指 managerId
             int res = eventMapper.insertUserGroup(event);
-            if (res > 0) {
+            int res2 = eventMapper.updateGroupmemberCount(event.getToId());
+            if (res > 0 && res2 > 0) {
                 eventMapper.deleteEventById(eventId);
                 log.info("将成功执行的事件从数据库中删除，事件ID为 " + event.getEventId());
                 return "同意其进入群组";

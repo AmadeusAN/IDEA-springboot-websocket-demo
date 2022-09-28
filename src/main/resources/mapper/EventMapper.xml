@@ -123,4 +123,10 @@
           and to_id = #{groupId}
         order by send_time desc limit 20
     </select>
+
+    <update id="updateGroupmemberCount">
+        update `groups`
+        set member_count = member_count + 1
+        where group_id = #{id}
+    </update>
 </mapper>
