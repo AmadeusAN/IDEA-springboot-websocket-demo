@@ -8,7 +8,7 @@
 
     </style>
 </head>
-<body >
+<body>
 <div class="d-flex  vh-100 main  p-3 justify-content-center">
     <form class="mb-3  w-50  align-self-center" th:action="@{/trylogin}" th:object="${user}">
         <figure>用户登录</figure>
@@ -23,6 +23,21 @@
                    placeholder="user-password"/>
             <label for="password">password</label>
         </div>
+
+        <div class="row mb-3">
+            <div class="col-lg-6">
+                <div class="form-floating">
+                    <input class="form-control" id="vertifycode" name="vertifycode" type="text"
+                           placeholder="user-account"/>
+                    <label for="vertifycode">验证码</label>
+                </div>
+            </div>
+            <div class="col-lg-6  d-flex justify-content-lg-center">
+                <img id="vertifyimg" th:src="@{/img/vertifycode.png?t=__${#dates.createNow()}__}" width="200"
+                     height="70" onclick="changeVertifyImg()"/>
+            </div>
+        </div>
+
         <div class="d-grid mb-3">
             <button class="btn btn-outline-success" type="submit">登录</button>
         </div>
@@ -50,6 +65,14 @@
             } else {
                 document.getElementById("alert").className = "alert alert-danger alert-dismissible fade show";
             }
+        }
+
+        function changeVertifyImg() {
+            $.post('/login/reloadvertifyimg', function (data) {
+                // alert(data);
+                let url = '/img/vertifycode.png';
+                $('#vertifyimg').attr('src', url + '?t=' + new Date());
+            });
         }
     </script>
 </div>

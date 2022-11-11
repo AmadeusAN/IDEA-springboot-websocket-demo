@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.nio.file.Files;
@@ -42,12 +41,6 @@ public class IndexController {
     @Autowired
     private GroupMapper groupMapper;
 
-    @RequestMapping("/")
-    public String start(Model model, HttpServletRequest request) {
-        log.info("URI = " + request.getRequestURI());
-        model.addAttribute("user", new User());
-        return "login";
-    }
 
     @RequestMapping("/findFriends/{id}")
     public String findFriends(@PathVariable Integer id, Model model) {
