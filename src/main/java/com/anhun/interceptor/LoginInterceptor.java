@@ -25,7 +25,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         if (uri.indexOf("/trylogin") >= 0) return true;
         if (uri.indexOf("/register") >= 0) return true;
         if (uri.indexOf("/registeruser") >= 0) return true;
-        if (uri.endsWith(".png") || uri.endsWith(".css") || uri.endsWith(".map")) return true;
+        if (uri.endsWith(".png") || uri.endsWith(".css") || uri.endsWith(".js") || uri.endsWith(".map")) return true;
         if (uri.indexOf("/error") >= 0) return true;
 
 //        if(uri.indexOf("/toIndex")>=0) return true;
