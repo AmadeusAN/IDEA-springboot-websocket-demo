@@ -10,11 +10,14 @@ import org.springframework.context.annotation.PropertySource;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
+import java.util.logging.Logger;
 
 @Configuration
 @PropertySource(value = {"application.yml"})
 @ConfigurationProperties(prefix = "spring.datasource")
 public class DruidConfig {
+    private final Logger log = Logger.getLogger("DruidConfig.class");
+
     private String url;
     private String username;
     private String password;
@@ -32,7 +35,7 @@ public class DruidConfig {
 
     private int timeBetweenEvictionRunsMills;
 
-    private int minEvictableTimeMills;
+    private int minEvictableIdleTimeMills;
 
     private String validationQuery;
 
@@ -122,12 +125,12 @@ public class DruidConfig {
         this.timeBetweenEvictionRunsMills = timeBetweenEvictionRunsMills;
     }
 
-    public int getMinEvictableTimeMills() {
-        return minEvictableTimeMills;
+    public int getMinEvictableIdleTimeMills() {
+        return minEvictableIdleTimeMills;
     }
 
-    public void setMinEvictableTimeMills(int minEvictableTimeMills) {
-        this.minEvictableTimeMills = minEvictableTimeMills;
+    public void setMinEvictableIdleTimeMills(int minEvictableIdleTimeMills) {
+        this.minEvictableIdleTimeMills = minEvictableIdleTimeMills;
     }
 
     public String getValidationQuery() {
@@ -206,7 +209,9 @@ public class DruidConfig {
         dataSource.setMinIdle(minIdle);
         dataSource.setMaxActive(maxActive);
         dataSource.setTimeBetweenEvictionRunsMillis(timeBetweenEvictionRunsMills);
-        dataSource.setMinEvictableIdleTimeMillis(minEvictableTimeMills);
+
+        log.info("设置的 minEvictableIdleTimeMills = " + minEvictableIdleTimeMills);
+        dataSource.setMinEvictableIdleTimeMillis(minEvictableIdleTimeMills);
         dataSource.setValidationQuery(validationQuery);
         dataSource.setTestWhileIdle(testWhileIdle);
         dataSource.setTestOnBorrow(testOnBorrow);

@@ -17,7 +17,7 @@ spring:
     #    关闭空闲连接的间隔时间
     timeBetweenEvictionRunsMillis: 60000
     #    一个连接在一个池内的最小生存时间，单位毫秒
-    minEvictableIdleTimeMills: 30000
+    minEvictableIdleTimeMills: 40000
     validationQuery: SELECT 1 FROM DUAL
     testWhileIdle: true
     testOnBorrow: false

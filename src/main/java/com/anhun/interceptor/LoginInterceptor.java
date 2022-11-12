@@ -37,6 +37,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         }
 
         request.getRequestDispatcher("/").forward(request, response);
+        log.info("未放行此时请求，已转发至 login 页面");
         return false;
     }
 
