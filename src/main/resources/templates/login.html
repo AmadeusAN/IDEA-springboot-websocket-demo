@@ -5,7 +5,12 @@
     <title>登录页面</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <style>
-
+        body {
+            /*background-image:url('/img/skade.jpg');*/
+            background-attachment: fixed;
+            background-color: white;
+            background-size: cover;
+        }
     </style>
 </head>
 <body>
@@ -24,6 +29,7 @@
             <label for="password">password</label>
         </div>
 
+        <!--验证码部分-->
         <div class="row mb-3">
             <div class="col-lg-6">
                 <div class="form-floating">
@@ -67,6 +73,7 @@
             }
         }
 
+        // 更新验证码
         function changeVertifyImg() {
             $.post('/login/reloadvertifyimg', function (data) {
                 // alert(data);

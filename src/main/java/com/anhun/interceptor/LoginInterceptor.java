@@ -20,12 +20,14 @@ public class LoginInterceptor implements HandlerInterceptor {
         String uri = request.getRequestURI();
         log.info("拦截器接收到的 uri = " + uri);
 
+//        放行登录页面静态资源
         if (uri.equals("/")) return true;
         if (uri.indexOf("/login") >= 0) return true;
         if (uri.indexOf("/trylogin") >= 0) return true;
         if (uri.indexOf("/register") >= 0) return true;
         if (uri.indexOf("/registeruser") >= 0) return true;
-        if (uri.endsWith(".png") || uri.endsWith(".css") || uri.endsWith(".js") || uri.endsWith(".map")) return true;
+        if (uri.endsWith(".png") || uri.endsWith(".jpg") || uri.endsWith(".css") || uri.endsWith(".js") || uri.endsWith(".map"))
+            return true;
         if (uri.indexOf("/error") >= 0) return true;
 
 //        if(uri.indexOf("/toIndex")>=0) return true;
