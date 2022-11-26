@@ -39,7 +39,7 @@
                 </div>
             </div>
             <div class="col-lg-6  d-flex justify-content-lg-center">
-                <img id="vertifyimg" th:src="@{/img/vertifycode.png?t=__${#dates.createNow()}__}" width="200"
+                <img id="vertifyimg" th:src="@{/img/__${userUUID}__.png?t=__${#dates.createNow()}__}" width="200"
                      height="70" onclick="changeVertifyImg()"/>
             </div>
         </div>
@@ -75,9 +75,10 @@
 
         // 更新验证码
         function changeVertifyImg() {
+            var UUID = '[[${userUUID}]]'
             $.post('/login/reloadvertifyimg', function (data) {
                 // alert(data);
-                let url = '/img/vertifycode.png';
+                let url = '/img/' + UUID + '.png';
                 $('#vertifyimg').attr('src', url + '?t=' + new Date());
             });
         }
